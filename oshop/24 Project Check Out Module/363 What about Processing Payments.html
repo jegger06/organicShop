@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>363 What about Processing Payments</title>
+</head>
+<body>
+<div class="asset-container">
+    <div class="asset-container__padding article-view">
+        <div class="w3c-default">
+            <h4>What about processing payments? </h4>
+
+
+
+
+
+<p>This really depends on what payment processing service you’re going to use. The implementation varies from one provider to another. The two popular payment processing services are <strong>PayPal</strong> and <strong>Stripe</strong>, but of course, there are plenty other providers out there. </p>
+
+
+
+
+
+
+
+<p>Most these providers give you a pair of public and private keys. These keys are used to call their APIs and charge the customer. You put the public key in environment.ts in your Angular app and store the private key on the server. So, this means your Angular application needs a back-end.</p>
+
+
+
+
+
+
+
+<p>Here you have 2 options: </p>
+
+
+
+
+
+
+
+<p><strong>1- Build the back-end:</strong> You can build the back-end using one of the back-end frameworks such as Node, <a href="http://ASP.NET" rel="nofollow">ASP.NET</a>, Django, etc. However, you cannot host this application on Firebase anymore, because Firebase can only host the front-end of your application. So, you need to deploy your application to Heroku, AWS, Azure or another platform. </p>
+
+
+
+
+
+
+
+
+
+
+
+<p><strong>2- Use Firebase functions:</strong> If you want to host this application on Firebase and don’t want to build a back-end, you can use Firebase Functions. This is a new feature that is only available on the paid plans. You create a function by writing JavaScript code. This function listens to changes to a node in your Firebase database. For example, when you write to the orders node, this function will be called automatically. At this point, you can call Stripe (or another provider) to charge the customer. </p>
+
+
+
+
+
+
+
+<p>Again, the implementation is very specific and depends on a number of factors. Not to mention that most these providers give you a SDK that can change from one version to another. And creating videos around such libraries is a pain! </p>
+
+
+
+
+
+
+
+<p>So, I’ve had several constraints here and that’s the reason I couldn’t add this feature to this course. But I hope this article guideD you in the right direction. </p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>358 Transactions</title>
+</head>
+<body>
+<div class="asset-container">
+    <div class="asset-container__padding article-view">
+        <div class="w3c-default">
+            <p>Look at the current implementation of placeOrder method in OrderService: </p>
+
+
+
+
+
+
+
+
+
+<p>async placeOrder(order) {</p>
+
+
+
+<p>   let result = await this.db.list(‘/orders’).push(order);</p>
+
+
+
+<p>   this.shoppingCartService.clearCart();</p>
+
+
+
+<p>   return result; </p><p>
+
+}</p>
+
+
+
+
+
+
+
+
+
+
+
+<p>In this implementation, it is possible that the second line (for clearing the cart) fails for some unexpected reason while connecting with Firebase. </p>
+
+
+
+
+
+
+
+<p>A more reliable approach is to have a transaction. This will ensure that during placing an order, an order object is stored AND the corresponding shopping cart is cleared. Either both these operations succeed together or they both will fail. </p>
+
+
+
+
+
+
+
+<p>Using a transaction involves updating multiple nodes and that’s beyond the scope of this course. I’ve covered that in my course “Build Enterprise Applications with Angular”. </p><p><a href="https://www.udemy.com/angular2-advanced/" rel="nofollow">https://www.udemy.com/angular2-advanced/</a><br></p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
