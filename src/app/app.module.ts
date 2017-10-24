@@ -5,6 +5,9 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CustomFormsModule } from 'ng2-validation';
+import { DataTableModule } from 'angular-4-data-table';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -18,6 +21,7 @@ import { AdminProductsComponent } from './components/admin/admin-products/admin-
 import { AdminOrdersComponent } from './components/admin/admin-orders/admin-orders.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProductFormComponent } from './components/admin/product-form/product-form.component';
+import { ProductFilterComponent } from './components/product-filter/product-filter.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 import { environment } from './../environments/environment';
@@ -26,13 +30,16 @@ import { AuthGuard } from './services/auth-guard.service';
 import { UserService } from './services/user.service';
 import { AdminAuthGuard } from './services/admin-auth-guard.service';
 import { CategoryService } from './services/category.service';
+import { ProductService } from './services/product.service';
+import { ShoppingCartService } from './services/shopping-cart.service';
 
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { ProductCardComponent } from './components/product-card/product-card.component';
 
 const appRoutes = [
   {
     path: '',
-    component: HomeComponent
+    component: ProductsComponent
   },
   {
     path: 'products',
@@ -62,13 +69,18 @@ const appRoutes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'admin/products',
-    component: AdminProductsComponent,
+    path: 'admin/products/new',
+    component: ProductFormComponent,
     canActivate: [AuthGuard, AdminAuthGuard]
   },
   {
-    path: 'admin/products/new',
+    path: 'admin/products/:id',
     component: ProductFormComponent,
+    canActivate: [AuthGuard, AdminAuthGuard]
+  },
+  {
+    path: 'admin/products',
+    component: AdminProductsComponent,
     canActivate: [AuthGuard, AdminAuthGuard]
   },
   {
@@ -96,22 +108,29 @@ const appRoutes = [
     AdminOrdersComponent,
     LoginComponent,
     PageNotFoundComponent,
-    ProductFormComponent
+    ProductFormComponent,
+    ProductFilterComponent,
+    ProductCardComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    CustomFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     NgbModule.forRoot(),
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    DataTableModule
   ],
   providers: [
     AuthService,
     AuthGuard,
     UserService,
     AdminAuthGuard,
-    CategoryService
+    CategoryService,
+    ProductService,
+    ShoppingCartService
   ],
   bootstrap: [AppComponent]
 })

@@ -11,13 +11,18 @@ import { UserService } from './services/user.service';
 export class AppComponent {
   constructor(private userService: UserService, private auth: AuthService, private router: Router) {
     this.auth.user$.subscribe(user => {
-      if (user) {
-        // Save the user details into the realtime database
-        this.userService.save(user);
-
-        const returnUrl = localStorage.getItem('returnUrl');
-        router.navigateByUrl(returnUrl);
+      if (!user) {
+        return;
       }
+      // Save the user details into the realtime database
+      this.userService.save(user);
+
+      const returnUrl = localStorage.getItem('returnUrl');
+      if (!returnUrl) {
+        return;
+      }
+      localStorage.removeItem('returnUrl');
+      router.navigateByUrl(returnUrl);
     });
   }
 }
