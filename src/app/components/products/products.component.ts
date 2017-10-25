@@ -1,5 +1,6 @@
-import { Subscription } from 'rxjs/Subscription';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ShoppingCart } from './../../models/shopping-cart';
+import { Observable } from 'rxjs/Observable';
+import { Component, OnInit } from '@angular/core';
 import { Product } from './../../models/product';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from './../../services/product.service';
@@ -11,18 +12,24 @@ import 'rxjs/add/operator/switchMap';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
-export class ProductsComponent implements OnInit, OnDestroy {
+export class ProductsComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   cat: string;
-  cart: any;
-  subscription: Subscription;
+  cart$: Observable<ShoppingCart>;
 
   constructor(
-    public route: ActivatedRoute,
-    public productService: ProductService,
+    private route: ActivatedRoute,
+    private productService: ProductService,
     private shoppingCartService: ShoppingCartService
-    ) {
+    ) { }
+
+  async ngOnInit() {
+    this.cart$ = await this.shoppingCartService.getCart();
+    this.populatProducts();
+  }
+
+  private populatProducts() {
     this.productService
       .getAll()
       .switchMap(products => {
@@ -31,20 +38,13 @@ export class ProductsComponent implements OnInit, OnDestroy {
       })
       .subscribe(params => {
         this.cat = params.get('category');
-
-        this.filteredProducts = (this.cat) ?
-          this.products.filter(product => product.category === this.cat) : this.products;
+        this.applyFilter();
       });
-
   }
 
-  async ngOnInit() {
-    this.subscription = (await this.shoppingCartService.getCart())
-      .subscribe(cart => this.cart = cart);
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+    private applyFilter() {
+      this.filteredProducts = (this.cat) ?
+        this.products.filter(product => product.category === this.cat) : this.products;
   }
 
 }
