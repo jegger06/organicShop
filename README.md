@@ -6,23 +6,61 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-## Running unit tests
+Before running the `ng build --prod`, edit the following files first because we are using the [angular-4-data-table](https://www.npmjs.com/package/angular-4-data-table):
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+`admin.module.ts` - Look for the 
 
-## Running end-to-end tests
+`import { DataTableModule } from 'angular-4-data-table';` change it into 
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+`import { DataTableModule } from 'angular-4-data-table/src/index';`
 
-## Further help
+Edit the `.angular-cli.json` with this `"scripts": [ "../node_modules/angular-4-data-table/dist/index.js" ],`
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+And use this command `ng build --prod --aot=false`
+
+Reference from the [github documentation](https://github.com/MIt9/angular-4-data-table)
+
+## Deploying it
+
+Deploy to firebase if you are working with a firebase realtime database. 
+
+Deploy to Github Pages if you have front end only or you are using a live API.
+
+This will only work if we use the built in command line of the OS. 
+
+Run this into the command line:
+
+`npm install -g firebase-tools`
+
+`firebase login`
+
+`firebase init`
+
+Answer the followint questions (Hosting, choose the project you created in firebase). Edit the `firebase.json` write the following code
+
+
+```javascript
+{
+  "hosting": {
+    "public": "dist",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
+```
+
+`ng build --prod`
+
+`firebase deploy`
+
+That's all. You have now uploaded your application into firebase.
+
+
